@@ -257,13 +257,16 @@ export default class ExRouter extends React.Component {
         debug(Object.keys(router.routes));
         debug(router.stack);
 
+        // var navigationStyles = React.Platform.OS === 'android' ?
+          // Navigator.NavigationBar.StylesAndroid : Navigator.NavigationBar.StylesIOS;
+        var self =this;
         return (
             <View style={styles.transparent}>
                 {header}
                 <ExNavigator ref="nav" initialRouteStack={router.stack.map(route => new ExRouteAdapter(router.routes[route]))}
                          style={styles.transparent}
                          sceneStyle={{ paddingTop: 0 }}
-                         renderNavigationBar={props=><ExNavigationBar {...props} router={router} navigationStyles={Navigator.NavigationBar.StylesIOS}/>}
+                         renderNavigationBar={props=><ExNavigationBar {...props} router={router} navigationStyles={self.props.navigationStyles ? self.props.navigationStyles: undefined}/>}
                     {...this.props}
                 />
                 {footer}
