@@ -80,7 +80,10 @@ class Actions {
         } else {
             let router: Router = this.currentRouter;
             debug("Pop, router="+router.name);
-            while (router.stack.length <= 1 || router.currentRoute.type === 'switch'){
+            if(!router.parentRoute && router.stack.length <= 1){
+              return false;
+            }
+            while ( router.stack.length <= 1 || router.currentRoute.type === 'switch'){
                 router = router.parentRoute.parent;
                 debug("Switching to parent router="+router.name);
             }
