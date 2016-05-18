@@ -25,13 +25,16 @@ function filterParam(data){
 
 class Actions {
     currentRouter: ?Router;
-
+    routing:false;
     constructor(){
         this.pop = this.pop.bind(this);
         this.route = this.route.bind(this);
     }
 
     route(name: string, props: { [key: string]: any} = {}){
+        if (this.routing) {
+          return false;
+        };
         if (!this.currentRouter){
             throw new Error("No current router is set");
         }
@@ -58,6 +61,7 @@ class Actions {
             debug("Switching to router="+router.name);
         }
         if (router.route(name, props)){
+          this.routing = true;
             this.currentRouter = router;
             return true;
         }
