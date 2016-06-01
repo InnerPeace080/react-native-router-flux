@@ -1,58 +1,132 @@
-'use strict';
-
-var React = require('react-native');
-var {AppRegistry, Navigator, StyleSheet,Text,View} = React;
-var Launch = require('./components/Launch');
-var Register = require('./components/Register');
-var Login = require('./components/Login');
-var Login2 = require('./components/Login2');
-var {Router, Route, Schema, Animations, TabBar} = require('react-native-router-flux');
-var Error = require('./components/Error');
-var Home = require('./components/Home');
-var TabView = require('./components/TabView');
+import React from 'react';
+import {AppRegistry, Navigator, StyleSheet, Text, View} from 'react-native'
+import Launch from './components/Launch'
+import Register from './components/Register'
+import Login from './components/Login'
+import Login2 from './components/Login2'
+import {Scene, Reducer, Router, Switch, TabBar, Modal, Schema, Actions} from 'react-native-router-flux'
+import Error from './components/Error'
+import Home from './components/Home'
+import TabView from './components/TabView'
+import EchoView from './components/EchoView'
+import NavigationDrawer from './components/NavigationDrawer'
+import Button from "react-native-button";
 
 class TabIcon extends React.Component {
     render(){
         return (
-            <Text style={{color: this.props.selected ? 'red' :'black'}}>{this.props.title}</Text>
+            <Text style={{color: this.props.selected ? "red" :"black"}}>{this.props.title}</Text>
         );
     }
 }
 
+class Right extends React.Component {
+    render(){
+        return <Text style={{
+        width: 80,
+        height: 37,
+        position: "absolute",
+        bottom: 4,
+        right: 2,
+        padding: 8,
+    }}>Right</Text>
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {flex:1, backgroundColor:"transparent",justifyContent: "center",
+        alignItems: "center",}
+
+});
+
+const reducerCreate = params=>{
+    const defaultReducer = Reducer(params);
+    return (state, action)=>{
+        console.log("ACTION:", action);
+        return defaultReducer(state, action);
+    }
+};
+
+// define this based on the styles/dimensions you use
+const getSceneStyle = function (/* NavigationSceneRendererProps */ props, computedProps) {
+  const style = {
+    flex: 1,
+    backgroundColor: '#fff',
+    shadowColor: null,
+    shadowOffset: null,
+    shadowOpacity: null,
+    shadowRadius: null,
+  };
+  if (computedProps.isActive) {
+    style.marginTop = computedProps.hideNavBar ? 0 : 64;
+    style.marginBottom = computedProps.hideTabBar ? 0 : 50;
+  }
+  return style;
+};
+
+let currentSwitchPage = 'text1';
+
+const SwitcherPage = function (props) {
+    return (
+        <View>
+            <Text style={{marginTop:100,textAlign:'center'}}>current page: {props.text}</Text>
+            <Button
+                onPress={() => {
+                    currentSwitchPage = currentSwitchPage === 'text1' ? 'text2' : 'text1';
+                    Actions.refresh({key: 'switcher'});
+                }}
+            >
+              Switch!
+            </Button>
+            <Button
+                onPress={() => {
+                    Actions.launch({type:'reset'});
+                }}
+            >
+                Exit
+            </Button>
+        </View>
+    );
+};
+
 export default class Example extends React.Component {
     render() {
-        return (
-            <Router hideNavBar={true} >
-                <Schema name="modal" sceneConfig={Navigator.SceneConfigs.FloatFromBottom}/>
-                <Schema name="default" sceneConfig={Navigator.SceneConfigs.FloatFromRight}/>
-                <Schema name="withoutAnimation"/>
-                <Schema name="tab" type="switch" icon={TabIcon} />
-
-                <Route name="register" component={Register} title="Register"/>
-                <Route name="home" component={Home} title="Replace" type="replace"/>
-                <Route name="login" schema="modal">
-                    <Router>
-                        <Route name="loginModal" component={Login} title="Login" schema="modal"/>
-                        <Route name="loginModal2" component={Login2} title="Login2"/>
-                    </Router>
-                </Route>
-                <Route name="register2" component={Register} title="Register2"  schema="withoutAnimation"/>
-                <Route name="tabbar">
-                    <Router footer={TabBar} showNavigationBar={false}>
-                        <Route name="tab1" schema="tab" title="Tab #1" >
-                            <Router>
-                                <Route name="tab1_1" component={TabView} title="Tab #1_1" />
-                                <Route name="tab1_2" component={TabView} title="Tab #1_2" />
-                            </Router>
-                        </Route>
-                        <Route name="tab2" schema="tab" title="Tab #2" hideTabBar={true} component={TabView} />
-                        <Route name="tab3" schema="tab" title="Tab #3" component={TabView} />
-                        <Route name="tab4" schema="tab" title="Tab #4" component={TabView} />
-                        <Route name="tab5" schema="tab" title="Tab #5" component={TabView} />
-                    </Router>
-                </Route>
-                <Route name="launch" component={Launch} wrapRouter={true} title="Launch" hideNavBar={true} initial={true}/>
-            </Router>
-        );
+        return <Router createReducer={reducerCreate} getSceneStyle={getSceneStyle}>
+            <Scene key="modal" component={Modal} >
+                <Scene key="root" hideNavBar hideTabBar>
+                    <Scene key="echo" clone component={EchoView} getTitle={(navState) => navState.key} />
+                    <Scene key="switcher" component={Switch} selector={(props) => {
+                        return 'text1';
+                    }}>
+                        <Scene key="text1" text="text1" component={(props) => <SwitcherPage {...props} text={currentSwitchPage} />} />
+                        <Scene key="text2" text="text2" component={(props) => <SwitcherPage {...props} text={currentSwitchPage} />} />
+                    </Scene>
+                    <Scene key="register" component={Register} title="Register"/>
+                    <Scene key="register2" component={Register} title="Register2" duration={1}/>
+                    <Scene key="home" component={Home} title="Replace" type="replace"/>
+                    <Scene key="launch" component={Launch} title="Launch" initial={true} />
+                    <Scene key="login" direction="vertical"  >
+                        <Scene key="loginModal" component={Login} title="Login"/>
+                        <Scene key="loginModal2" hideNavBar={true} component={Login2} title="Login2" panHandlers={null} duration={1}/>
+                    </Scene>
+                    <Scene key="tabbar" component={NavigationDrawer}>
+                        <Scene key="main" tabs={true} >
+                            <Scene key="tab1"  title="Tab #1" icon={TabIcon} navigationBarStyle={{backgroundColor:"red"}} titleStyle={{color:"white"}}>
+                                <Scene key="tab1_1" component={TabView} title="Tab #1_1" onRight={()=>alert("Right button")} rightTitle="Right" />
+                                <Scene key="tab1_2" component={TabView} title="Tab #1_2" titleStyle={{color:"black"}}/>
+                            </Scene>
+                            <Scene key="tab2" initial={true} title="Tab #2" icon={TabIcon}>
+                                <Scene key="tab2_1" component={TabView} title="Tab #2_1" renderRightButton={()=><Right/>} />
+                                <Scene key="tab2_2" component={TabView} title="Tab #2_2" onLeft={()=>alert("Left button!")} leftTitle="Left" duration={1} panHandlers={null}/>
+                            </Scene>
+                            <Scene key="tab3" component={TabView} title="Tab #3" hideTabBar={true} icon={TabIcon}/>
+                            <Scene key="tab4" component={TabView} title="Tab #4" hideNavBar={true} icon={TabIcon}/>
+                            <Scene key="tab5" component={TabView} title="Tab #5" hideTabBar={true} hideNavBar={true} icon={TabIcon}/>
+                        </Scene>
+                    </Scene>
+                </Scene>
+                <Scene key="error" component={Error}/>
+            </Scene>
+        </Router>;
     }
 }
