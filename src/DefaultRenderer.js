@@ -164,21 +164,29 @@ export default class DefaultRenderer extends Component {
     const HeaderComponent = selected.navBar || child.navBar || state.navBar || NavBar;
     const navBarProps = { ...state, ...child, ...selected };
 
-    if ((selected.leftTitle || selected.leftButtonImage) && selected.onLeft) {
+    if (selected.component && selected.component.onRight) {
+      navBarProps.onRight = selected.component.onRight;
+    }
+
+    if (selected.component && selected.component.onLeft) {
+      navBarProps.onLeft = selected.component.onLeft;
+    }
+
+    if ((navBarProps.leftTitle || navBarProps.leftButtonImage) && navBarProps.onLeft) {
       delete navBarProps.leftButton;
     }
 
-    if ((selected.rightTitle || selected.rightButtonImage) && selected.onRight) {
+    if ((navBarProps.rightTitle || navBarProps.rightButtonImage) && navBarProps.onRight) {
       delete navBarProps.rightButton;
     }
 
-    if (selected.rightButton) {
+    if (navBarProps.rightButton) {
       delete navBarProps.rightTitle;
       delete navBarProps.onRight;
       delete navBarProps.rightButtonImage;
     }
 
-    if (selected.leftButton) {
+    if (navBarProps.leftButton) {
       delete navBarProps.leftTitle;
       delete navBarProps.onLeft;
       delete navBarProps.leftButtonImage;
@@ -208,11 +216,7 @@ export default class DefaultRenderer extends Component {
         <View
           style={[styles.sceneStyle, navigationState.sceneStyle]}
         >
-          <SceneComponent
-            {...navigationState}
-            onNavigate={onNavigate}
-            navigationState={navigationState}
-          />
+          <SceneComponent {...this.props} {...navigationState} />
         </View>
       );
     }

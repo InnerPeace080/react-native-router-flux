@@ -106,7 +106,7 @@ export default class Example extends React.Component {
                     <Scene key="home" component={Home} title="Replace" type="replace"/>
                     <Scene key="launch" component={Launch} title="Launch" initial={true} />
                     <Scene key="login" direction="vertical"  >
-                        <Scene key="loginModal" component={Login} title="Login"/>
+                        <Scene key="loginModal" direction="vertical" component={Login} title="Login"/>
                         <Scene key="loginModal2" hideNavBar={true} component={Login2} title="Login2" panHandlers={null} duration={1}/>
                     </Scene>
                     <Scene key="tabbar" component={NavigationDrawer}>
@@ -117,7 +117,7 @@ export default class Example extends React.Component {
                             </Scene>
                             <Scene key="tab2" initial={true} title="Tab #2" icon={TabIcon}>
                                 <Scene key="tab2_1" component={TabView} title="Tab #2_1" renderRightButton={()=><Right/>} />
-                                <Scene key="tab2_2" component={TabView} title="Tab #2_2" onLeft={()=>alert("Left button!")} leftTitle="Left" duration={1} panHandlers={null}/>
+                                <Scene key="tab2_2" component={TabView} title="Tab #2_2" hideBackImage onBack={()=>alert("Left button!")} backTitle="Left" duration={1} panHandlers={null}/>
                             </Scene>
                             <Scene key="tab3" component={TabView} title="Tab #3" hideTabBar={true} icon={TabIcon}/>
                             <Scene key="tab4" component={TabView} title="Tab #4" hideNavBar={true} icon={TabIcon}/>
