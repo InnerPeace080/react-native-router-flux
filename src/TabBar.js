@@ -25,7 +25,11 @@ class TabBar extends Component {
         `No action is defined for name=${el.props.name} ` +
         `actions: ${JSON.stringify(Object.keys(Actions))}`);
     }
-    Actions[el.props.name]();
+    if (typeof el.props.onPress === 'function') {
+      el.props.onPress();
+    } else {
+      Actions[el.props.name]();
+    }
   }
 
   renderScene(navigationState) {
@@ -54,8 +58,9 @@ class TabBar extends Component {
         />
         {!hideTabBar && state.children.filter(el => el.icon).length > 0 &&
           <Tabs
-            style={[{ backgroundColor: 'white' }, state.tabBarStyle]}
-            selectedIconStyle={[{ backgroundColor: 'white' }, state.tabBarSelectedItemStyle]}
+            style={state.tabBarStyle}
+            selectedIconStyle={state.tabBarSelectedItemStyle}
+            iconStyle={state.tabBarIconContainerStyle}
             onSelect={this.onSelect} {...state}
             selected={state.children[state.index].sceneKey}
           >
