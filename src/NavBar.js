@@ -215,8 +215,12 @@ class NavBar extends React.Component {
     }
     let buttonImage = childState.backButtonImage ||
       state.backButtonImage || this.props.backButtonImage;
-    let onPress = childState.onBack || Actions.pop;
-
+    let onPress = childState.onBack || childState.component.onBack;
+    if (onPress) {
+      onPress = onPress.bind(null, state);
+    } else {
+      onPress = Actions.pop;
+    }
     if (state.index === 0) {
       return null;
     }
