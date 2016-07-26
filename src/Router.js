@@ -90,6 +90,12 @@ class Router extends Component {
     Actions.get = key => findElement(navigationState, key, ActionConst.REFRESH);
     Actions.callback = props => {
       const constAction = (props.type && ActionMap[props.type] ? ActionMap[props.type] : null);
+      // not allow push scene that existed
+      if (props.type === 'REACT_NATIVE_ROUTER_FLUX_PUSH') {
+        if (navigationState.children[navigationState.children.length-1].sceneKey === props.key) {
+          return;
+        }
+      }
       if (this.props.dispatch) {
         if (constAction) {
           this.props.dispatch({ ...props, type: constAction });
