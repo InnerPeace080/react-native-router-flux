@@ -1,46 +1,55 @@
 {
-  "name": "react-native-router-flux",
-  "version": "3.31.1",
-  "description": "React Native Router using Flux architecture",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/aksonov/react-native-router-flux"
-  },
-  "main": "index.js",
-  "typings": "index.d.ts",
-  "scripts": {
-    "test": "mocha --compilers js:babel-core/register --require react-native-mock/mock",
-    "test:watch": "npm run test -- --watch",
-    "eslint": "eslint index.js src/ test/; exit 0;"
-  },
-  "keywords": [
-    "react-native",
-    "react-native-router",
-    "react-components",
-    "react-component",
-    "ios",
-    "android",
-    "flux",
-    "router",
-    "navigation"
+  "_args": [
+    [
+      "react-native-router-flux@git+https://github.com/InnerPeace080/react-native-router-flux.git",
+      "/Users/hungtran/Desktop/SCTVFilm"
+    ]
   ],
+  "_from": "git+https://github.com/InnerPeace080/react-native-router-flux.git",
+  "_id": "react-native-router-flux@3.31.1",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/react-native-router-flux",
+  "_phantomChildren": {},
+  "_requested": {
+    "hosted": {
+      "directUrl": "https://raw.githubusercontent.com/InnerPeace080/react-native-router-flux/master/package.json",
+      "gitUrl": "git://github.com/InnerPeace080/react-native-router-flux.git",
+      "httpsUrl": "git+https://github.com/InnerPeace080/react-native-router-flux.git",
+      "shortcut": "github:InnerPeace080/react-native-router-flux",
+      "ssh": "git@github.com:InnerPeace080/react-native-router-flux.git",
+      "sshUrl": "git+ssh://git@github.com/InnerPeace080/react-native-router-flux.git",
+      "type": "github"
+    },
+    "name": "react-native-router-flux",
+    "raw": "react-native-router-flux@git+https://github.com/InnerPeace080/react-native-router-flux.git",
+    "rawSpec": "git+https://github.com/InnerPeace080/react-native-router-flux.git",
+    "scope": null,
+    "spec": "git+https://github.com/InnerPeace080/react-native-router-flux.git",
+    "type": "hosted"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git+https://github.com/InnerPeace080/react-native-router-flux.git#907681cb2d324059d41750d9bf4e6682eded0f86",
+  "_shasum": "0182bb6e1bc0ced74402875910297db61d8b8b2a",
+  "_shrinkwrap": null,
+  "_spec": "react-native-router-flux@git+https://github.com/InnerPeace080/react-native-router-flux.git",
+  "_where": "/Users/hungtran/Desktop/SCTVFilm",
   "author": {
-    "name": "Pavlo Aksonov",
     "email": "akso.nov@gmail.com",
+    "name": "Pavlo Aksonov",
     "url": "http://aksonov.com"
   },
-  "license": "ISC",
-  "maintainers": [
-    {
-      "name": "aksonov",
-      "email": "pavlo.aksonov@gmail.com"
-    }
-  ],
+  "bugs": {
+    "url": "https://github.com/aksonov/react-native-router-flux/issues"
+  },
   "dependencies": {
     "react-native-experimental-navigation": "0.26.x",
     "react-native-tabs": "1.0.7",
     "react-static-container": "1.0.1"
   },
+  "description": "React Native Router using Flux architecture",
   "devDependencies": {
     "babel-core": "^6.7.6",
     "babel-eslint": "^6.1.0",
@@ -62,5 +71,41 @@
     "react-native": "0.26.x",
     "react-native-mock": "0.2.0",
     "sinon": "^1.17.3"
-  }
+  },
+  "gitHead": "907681cb2d324059d41750d9bf4e6682eded0f86",
+  "homepage": "https://github.com/aksonov/react-native-router-flux#readme",
+  "keywords": [
+    "react-native",
+    "react-native-router",
+    "react-components",
+    "react-component",
+    "ios",
+    "android",
+    "flux",
+    "router",
+    "navigation"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "email": "pavlo.aksonov@gmail.com",
+      "name": "aksonov"
+    }
+  ],
+  "name": "react-native-router-flux",
+  "optionalDependencies": {},
+  "readme": "# React Native Router [![Join the chat at https://gitter.im/aksonov/react-native-router-flux](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/aksonov/react-native-router-flux?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Codacy Badge](https://api.codacy.com/project/badge/grade/c6d869e2367a4fb491efc9de228c5ac6)](https://www.codacy.com/app/aksonov-github/react-native-router-flux) [![npm version](https://badge.fury.io/js/react-native-router-flux.svg)](http://badge.fury.io/js/react-native-router-flux)\n\nRouter for React Native based on new React Native Navigation API.\n\n## Documentation\n\n- [Mini-Tutorial](docs/MINI_TUTORIAL.md)\n- [API and Configuration](docs/API_CONFIGURATION.md)\n  - Available Imports\n  - Router API\n  - Scene API\n- [Detailed Example](docs/DETAILED_EXAMPLE.md)\n- [Reactive/Redux/Flux](docs/REDUX_FLUX.md)\n- [Other Info](docs/OTHER_INFO.md)\n  - Modals\n  - Tabbar\n  - Custom navbar\n  - Switch\n  - Splitting Scenes\n  - Drawer (side-menu)\n  - Sub-Scenes\n- [Changelog](docs/CHANGELOG.md)\n- [Migrating from 2.x](docs/MIGRATION.md)\n\n## Features\n\n`react-native-router-flux` is a routing package that allows you to:\n\n- Define scene transitions in one central location\n- Without having to pass navigator objects around, and allow you to\n- Call transitions anywhere in your code with a simple syntax (e.g. `Actions.login({username, password})` or `Actions.profile({profile})` or even `Actions.profile(123)` - all params will be part of `this.props` for given Scene component).\n\n### New Features and Highlights\n\n- **Highly Customizable Navigation Bar** - Show/hide the navbar depending on Scene or even the state of a Scene (e.g. Edit/Save navbar for edit mode).\n\n- **Tab Bar Support** using [react-native-tabs](https://github.com/aksonov/react-native-tabs) (see Example app).\n\n- **Nested Navigators** (e.g. Each tab can have its own navigator, nested in a root navigator).\n\n- **Custom Scene Renderers** for action sheet, native TabBarIOS or anything else. See built-in `Modal` renderer (to display popups) for example. *Call for PRs!* let's build some custom renderers for ActionSheet, Drawer, etc. Let's make an awesome library! Currently, if you want to use Action Sheets you'll need to use a 3rd party module.\n\n- **Dynamic Routing** allows you to choose which scene to render depending on application state (see the `Switch` renderer, useful for authentication).\n\n- **Bring Your Own Reducer** for navigation state.\n\n- **Reset History Stack** - The new [`reset`](docs/API_CONFIGURATION.md#scene)type for clearing the history stack and eliminating the navbar back button.\n\n- **More Powerful State Control** - Support for having different states while on the same screen. For example, \"View My Account\" could allow in-place editing of fields and \"Save\", \"Cancel\" navigation bar buttons should appear.\n\n## Getting Started\n\nCheck out the [mini-tutorial](docs/MINI_TUTORIAL.md) for a quick walkthrough of the routing system.\n\n## Supported configurations\n\nWhile ExperimentalNavigation API is not stable, RNRF uses separated fork of ExperimentalNavigation API to avoid dependency from React Native version.\nSo 3.30 version of RNRF doesn't depend from React Native version, but from that fork (now it is based on 0.26 API).\nYou could use this component with RN0.26+\n\n## Installation\n```\nnpm i react-native-router-flux --save\n```\n\n## Usage\nIn your top-level `index.js`, define your scenes using the `Scene` component and pass it into the `Router` as children:\n```js\nimport {Scene, Router} from 'react-native-router-flux';\n\nclass App extends React.Component {\n  render() {\n    return <Router>\n      <Scene key=\"root\">\n        <Scene key=\"login\" component={Login} title=\"Login\"/>\n        <Scene key=\"register\" component={Register} title=\"Register\"/>\n        <Scene key=\"home\" component={Home}/>\n      </Scene>\n    </Router>\n  }\n}\n```\nAlternatively, you could define all of your scenes during compile time and use it later within `Router`:\n```js\nimport {Actions, Scene, Router} from 'react-native-router-flux';\n\nconst scenes = Actions.create(\n  <Scene key=\"root\">\n    <Scene key=\"login\" component={Login} title=\"Login\"/>\n    <Scene key=\"register\" component={Register} title=\"Register\"/>\n    <Scene key=\"home\" component={Home}/>\n  </Scene>\n);\n\n/* ... */\n\nclass App extends React.Component {\n  render() {\n    return <Router scenes={scenes}/>\n  }\n}\n```\n\nOn any Scene, you can also call the following functions by first importing the `Actions` object:\n```js\nimport {Actions} from 'react-native-router-flux'\n```\nAnd then:\n\n* `Actions.ACTION_NAME(PARAMS)` will call the appropriate action and params will be passed to the scene.\n* `Actions.pop()` will pop the current screen. It can also take a param `{popNum: [number]}` that allows to pop multiple screens at once.\n* `Actions.refresh(PARAMS)` will update the properties of the current screen.\n\n## Production Apps using react-native-router-flux\n+ GuavaPass.com ([iOS](https://itunes.apple.com/en/app/guavapass-one-pass-fitness/id1050491044?l=en&mt=8), Android) - offers convenient access to top classes at boutique fitness studios across Asia.\n+ Epic Fail Videos ([iOS](https://itunes.apple.com/us/app/epic-fail-videos-best-fail/id1115219339), [Android](https://play.google.com/store/apps/details?id=com.hazuu.epicfailvideos)) - The best Fail Videos Collection, never miss a laugh with your friends!\n\n## Support\nThanks to all who submitted PRs to 2.x release. If you like the component and want to support it, feel free to donate any amount or help with issues.\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aksonov/react-native-router-flux.git"
+  },
+  "scripts": {
+    "eslint": "eslint index.js src/ test/; exit 0;",
+    "test": "mocha --compilers js:babel-core/register --require react-native-mock/mock",
+    "test:watch": "npm run test -- --watch"
+  },
+  "typings": "index.d.ts",
+  "version": "3.31.1"
 }
