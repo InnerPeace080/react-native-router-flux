@@ -14,10 +14,9 @@ import NavigationExperimental from 'react-native-experimental-navigation';
 
 import Actions, { ActionMap } from './Actions';
 import getInitialState from './State';
-import Reducer, { findElement } from './Reducer';
+import Reducer from './Reducer';
 import DefaultRenderer from './DefaultRenderer';
 import Scene from './Scene';
-import * as ActionConst from './ActionConst';
 
 const {
   RootContainer: NavigationRootContainer,
@@ -87,12 +86,13 @@ class Router extends Component {
     if (!navigationState) {
       return null;
     }
-    Actions.get = key => findElement(navigationState, key, ActionConst.REFRESH);
+
     Actions.callback = props => {
       const constAction = (props.type && ActionMap[props.type] ? ActionMap[props.type] : null);
-      // not allow push scene that existed
+      //not allow push scene that existed
       if (props.type === 'REACT_NATIVE_ROUTER_FLUX_PUSH') {
         if (navigationState.children[navigationState.children.length-1].sceneKey === props.key) {
+          Actions.refresh(props)
           return;
         }
       }
