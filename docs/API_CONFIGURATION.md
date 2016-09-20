@@ -22,6 +22,9 @@
 | children | | required (if no scenes property passed)| Scene root element |
 | scenes | `object` | optional | scenes for Router created with Actions.create. This will allow to create all actions BEFORE React processing. If you don't need it you may pass Scene root element as children |
 | getSceneStyle | `function` | optional | Optionally override the styles for NavigationCard's Animated.View rendering the scene. |
+| backAndroidHandler | `function` | optional | Optionally override the handler for `BackAndroid`, return `true` to stay in the app or return `false` to exit the app. Default handler will pop a scene and exit the app at last when the back key is pressed on Android. |
+| onBackAndroid | `function` | optional | Get called after back key is pressed and a scene is poped, won't affect the default behavior. |
+| onExitApp | `function` | optional | Optionally override the default action after back key is pressed on root scene. Return `true` to stay, or return `false` to exit the app. |
 
 ## Scene:
 
@@ -36,15 +39,15 @@
 
 ## ActionConst:
 
-We accept shorthand string literal when defining scene tpye or action params, like:  
+We accept shorthand string literal when defining scene type or action params, like:
 
 ```javascript
 Actions.ROUTE_NAME({type: 'reset'});
 <Scene key="myscene" type="replace" >
 ```
 
-but it will be converted to const value when pass to reducer.  
-RECOMMENDATION is to always use const instead of string literal for consistency:  
+but it will be converted to const value when pass to reducer.
+RECOMMENDATION is to always use const instead of string literal for consistency:
 
 ```javascript
 Actions.ROUTE_NAME({type: ActionConst.RESET});
@@ -67,10 +70,16 @@ Actions.ROUTE_NAME({type: ActionConst.RESET});
 | Property | Type | Default | Description |
 |-----------|--------|---------|--------------------------------------------|
 | duration | `number` | | optional. acts as a shortcut to writing an `applyAnimation` function with `Animated.timing` for a given duration (in ms). |
-| direction | `string` | 'horizontal' | direction of animation horizontal/vertical |
+| direction | `string` | 'horizontal' | direction of animation horizontal/vertical/leftToRight ('horizontal' will be right to left)|
 | animation | `string` | | animation options when transitioning: 'fade' currently only option |
 | animationStyle | `function` | | optional interpolation function for scene transitions: `animationStyle={interpolationFunction}` |
 | applyAnimation | `function` | | optional if provided overrides the default spring animation |
+
+### Gestures
+| Property | Type | Default | Description |
+|-----------|--------|---------|--------------------------------------------|
+| panHandlers | `object` | | optional, provide null to disable swipe back gesture |
+| getPanHandlers | `function` | optional | Optionally override the gesture handlers for scene |
 
 ### Scene styles
 | Property | Type | Default | Description |
@@ -85,6 +94,7 @@ Actions.ROUTE_NAME({type: ActionConst.RESET});
 | tabBarStyle | [`View style`](https://facebook.github.io/react-native/docs/view.html#style) |  | optional style override for the Tabs component |
 | tabBarIconContainerStyle | [`View style`](https://facebook.github.io/react-native/docs/view.html#style) |  | optional style override for the View that contains each tab icon |
 | hideTabBar | `bool` | false | hides tab bar for this scene and any following scenes until explicitly reversed (if built-in TabBar component is used as parent renderer)|
+| pressOpacity | `number` | 0.2 | the opacity when clicking on the tab |
 
 
 ### Navigation Bar
@@ -103,6 +113,7 @@ Actions.ROUTE_NAME({type: ActionConst.RESET});
 | renderTitle | `function` | optional | Optionally closure to render the title |
 | titleStyle | [`Text style`](https://facebook.github.io/react-native/docs/text.html#style) |  | optional style override for the title element |
 | titleOpacity | `string` | optional | Set opacity for the title in navigation bar |
+| titleProps | `object` | null | Any other properties to be set on the title component |
 
 #### Navigation Bar: Back button
 | Property | Type | Default | Description |
@@ -118,6 +129,7 @@ Actions.ROUTE_NAME({type: ActionConst.RESET});
 | Property | Type | Default | Description |
 |-----------|--------|---------|--------------------------------------------|
 | leftTitle | `string` | | optional string to display on the left if the previous route does not provide `renderBackButton` prop. `renderBackButton` > `leftTitle` > <previous route's `title`> |
+| getLeftTitle | `function` | | optional closure to display on the left if the previous route does not provide `renderBackButton` prop. `renderBackButton` > `getLeftTitle` > <previous route's `title`> |
 | renderLeftButton | `function` | | optional closure to render the left title / buttons element |
 | onLeft | `function` | | function will be called when left navBar button is pressed |
 | leftButtonImage | [`Image source`](https://facebook.github.io/react-native/docs/image.html#source) |  | Image for left button |
@@ -129,6 +141,7 @@ Actions.ROUTE_NAME({type: ActionConst.RESET});
 | Property | Type | Default | Description |
 |-----------|--------|---------|--------------------------------------------|
 | rightTitle | `string` | | optional string to display on the right. `onRight` must be provided for this to appear. |
+| getRightTitle | `function` | | optional closure to display on the right. `onRight` must be provided for this to appear. |
 | renderRightButton | `function` | | optional closure to render the right title / buttons element |
 | onRight | `function` | | function will be called when right navBar button is pressed |
 | rightButtonImage | [`Image source`](https://facebook.github.io/react-native/docs/image.html#source) |  | Image for right button |

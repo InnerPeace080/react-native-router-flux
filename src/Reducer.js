@@ -13,6 +13,7 @@ import * as ActionConst from './ActionConst';
 import { ActionMap } from './Actions';
 import { assert } from './Util';
 import { getInitialState } from './State';
+import { Platform } from 'react-native';
 
 // WARN: it is not working correct. rewrite it.
 function checkPropertiesEqual(action, lastAction) {
@@ -25,6 +26,33 @@ function checkPropertiesEqual(action, lastAction) {
     }
   }
   return isEqual;
+}
+
+function resetHistoryStack(child) {
+  const newChild = child;
+  newChild.index = 0;
+  child.children.map(
+    (el, i) => {
+      if (el.initial) {
+        newChild.index = i;
+        if (!newChild.tabs) {
+          newChild.children = [el];
+        }
+      }
+      if (el.children) {
+        resetHistoryStack(el);
+      }
+      return newChild;
+    }
+  );
+}
+
+function refreshTopChild(children, refresh) {
+  if (refresh) {
+    const topChild = children[children.length - 1];
+    return [...children.slice(0, -1), { ...topChild, ...refresh }];
+  }
+  return children;
 }
 
 function inject(state, action, props, scenes) {
@@ -56,13 +84,18 @@ function inject(state, action, props, scenes) {
       return {
         ...state,
         index: targetIndex,
-        children: state.children.slice(0, (targetIndex + 1)),
+        children: refreshTopChild(state.children.slice(0, (targetIndex + 1)), action.refresh),
       };
     }
 
     case ActionConst.BACK:
     case ActionConst.BACK_ACTION: {
       assert(!state.tabs, 'pop() operation cannot be run on tab bar (tabs=true)');
+
+      if (Platform.OS === 'android') {
+        assert(state.index > 0, 'You are already in the root scene.');
+      }
+
       if (state.index === 0) {
         return state;
       }
@@ -85,7 +118,7 @@ function inject(state, action, props, scenes) {
         ...state,
         index: state.index - popNum,
         from: state.children[state.children.length - popNum],
-        children: state.children.slice(0, -1 * popNum),
+        children: refreshTopChild(state.children.slice(0, -1 * popNum), action.refresh),
       };
     }
     case ActionConst.REFRESH:
@@ -107,7 +140,7 @@ function inject(state, action, props, scenes) {
           ...state,
           index: ind,
           from: state.children[state.index],
-          children: state.children.slice(0, ind + 1),
+          children: refreshTopChild(state.children.slice(0, ind + 1), action.refresh),
         };
       }
       return {
@@ -132,6 +165,10 @@ function inject(state, action, props, scenes) {
       ind = -1;
       state.children.forEach((c, i) => { if (c.sceneKey === action.key) { ind = i; } });
       assert(ind !== -1, `Cannot find route with key=${action.key} for parent=${state.key}`);
+
+      if (action.unmountScenes) {
+        resetHistoryStack(state.children[ind]);
+      }
       return { ...state, index: ind };
     case ActionConst.REPLACE:
       if (state.children[state.index].sceneKey === action.key) {
