@@ -42,9 +42,13 @@ import _backButtonImage from './back_chevron.png';
 const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
-    marginTop: 10,
-    fontSize: 18,
     color: '#0A0A0A',
+    fontSize: 18,
+    width: 180,
+    alignSelf: 'center',
+  },
+  titleWrapper: {
+    marginTop: 10,
     position: 'absolute',
     ...Platform.select({
       ios: {
@@ -76,7 +80,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   backButton: {
-    width: 130,
+    width: 100,
     height: 37,
     position: 'absolute',
     ...Platform.select({
@@ -159,11 +163,13 @@ const propTypes = {
   leftButtonStyle: View.propTypes.style,
   leftButtonIconStyle: Image.propTypes.style,
   getTitle: PropTypes.func,
+  titleWrapperStyle: Text.propTypes.style,
   titleStyle: Text.propTypes.style,
   titleOpacity: PropTypes.number,
   titleProps: PropTypes.any,
   position: PropTypes.object,
   navigationBarStyle: View.propTypes.style,
+  navigationBarBackgroundImage: Image.propTypes.source,
   renderTitle: PropTypes.any,
 };
 
@@ -206,7 +212,7 @@ class NavBar extends React.Component {
       childState.leftButtonStyle,
     ];
 
-    if (state.index === 0) {
+    if (state.index === 0 && (!state.parentIndex || state.parentIndex === 0)) {
       return null;
     }
 
@@ -413,32 +419,41 @@ class NavBar extends React.Component {
       title = title(childState);
     }
     return (
-      <Animated.Text
-        {...this.props.titleProps}
+      <Animated.View
         key={childState.key}
         style={[
-          styles.title,
-          this.props.titleStyle,
-          this.props.navigationState.titleStyle,
-          childState.titleStyle,
-          {
-            opacity: this.props.position.interpolate({
-              inputRange: [index - 1, index, index + 1],
-              outputRange: [0, this.props.titleOpacity, 0],
-            }),
-            left: this.props.position.interpolate({
-              inputRange: [index - 1, index + 1],
-              outputRange: [200, -200],
-            }),
-            right: this.props.position.interpolate({
-              inputRange: [index - 1, index + 1],
-              outputRange: [-200, 200],
-            }),
-          },
+          styles.titleWrapper,
+          this.props.titleWrapperStyle,
         ]}
       >
-        {title}
-      </Animated.Text>
+        <Animated.Text
+          lineBreakMode="tail"
+          numberOfLines={1}
+          {...this.props.titleProps}
+          style={[
+            styles.title,
+            this.props.titleStyle,
+            this.props.navigationState.titleStyle,
+            childState.titleStyle,
+            {
+              opacity: this.props.position.interpolate({
+                inputRange: [index - 1, index, index + 1],
+                outputRange: [0, this.props.titleOpacity, 0],
+              }),
+              left: this.props.position.interpolate({
+                inputRange: [index - 1, index + 1],
+                outputRange: [200, -200],
+              }),
+              right: this.props.position.interpolate({
+                inputRange: [index - 1, index + 1],
+                outputRange: [-200, 200],
+              }),
+            },
+          ]}
+        >
+          {title}
+        </Animated.Text>
+      </Animated.View>
     );
   }
 
@@ -471,6 +486,15 @@ class NavBar extends React.Component {
     const renderTitle = selected.renderTitle ||
       selected.component.renderTitle ||
       this.props.renderTitle;
+    const navigationBarBackgroundImage = this.props.navigationBarBackgroundImage ||
+      state.navigationBarBackgroundImage;
+    const contents = (
+      <View>
+        {renderTitle ? renderTitle(navProps) : state.children.map(this.renderTitle, this)}
+        {renderBackButton(navProps) || renderLeftButton(navProps)}
+        {renderRightButton(navProps)}
+      </View>
+    );
     return (
       <Animated.View
         style={[
@@ -480,9 +504,11 @@ class NavBar extends React.Component {
           selected.navigationBarStyle,
         ]}
       >
-        {renderTitle ? renderTitle(navProps) : state.children.map(this.renderTitle, this)}
-        {renderBackButton(navProps) || renderLeftButton(navProps)}
-        {renderRightButton(navProps)}
+        {navigationBarBackgroundImage ? (
+          <Image source={navigationBarBackgroundImage}>
+            {contents}
+          </Image>
+        ) : contents}
       </Animated.View>
     );
   }
