@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     ...Platform.select({
       ios: {
-        top: 20,
+        top: 5,
       },
       android: {
         top: 5,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     top: 0,
     ...Platform.select({
       ios: {
-        height: 64,
+        height: 54,
       },
       android: {
         height: 54,
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     ...Platform.select({
       ios: {
-        top: 22,
+        top: 10,
       },
       android: {
         top: 10,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     ...Platform.select({
       ios: {
-        top: 22,
+        top: 10,
       },
       android: {
         top: 10,
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     ...Platform.select({
       ios: {
-        top: 20,
+        top: 8,
       },
       android: {
         top: 8,
