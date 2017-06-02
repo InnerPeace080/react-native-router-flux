@@ -142,6 +142,14 @@ class Router extends Component {
           return;
         }
       }
+
+      if (props.type === 'REACT_NATIVE_ROUTER_FLUX_REFRESH') {
+        if (navigationState.children[navigationState.children.length-1].sceneKey === props.key) {
+          Actions.refresh(props)
+          return;
+        }
+      }
+
       if (this.props.dispatch) {
         if (constAction) {
           this.props.dispatch({ ...props, type: constAction });
