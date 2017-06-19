@@ -138,14 +138,14 @@ class Router extends Component {
       //not allow push scene that existed
       if (props.type === 'REACT_NATIVE_ROUTER_FLUX_PUSH') {
         if (navigationState.children[navigationState.children.length-1].sceneKey === props.key) {
-          Actions.refresh(props)
+          Actions.refresh({...props,type:'refresh'})
           return;
         }
       }
 
       if (props.type === 'REACT_NATIVE_ROUTER_FLUX_REFRESH') {
         if (navigationState.children[navigationState.children.length-1].sceneKey === props.key) {
-          Actions.refresh(props)
+          Actions.refresh({...props,type:'refresh'})
           return;
         }
       }
